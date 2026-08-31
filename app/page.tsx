@@ -14,6 +14,7 @@ import {
   BriefcaseBusiness,
   ChartNoAxesCombined,
   Check,
+  ChevronDown,
   Code2,
   FileDown,
   Layers3,
@@ -170,9 +171,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             <div><span>{copy.hero.based}</span><strong>{copy.hero.location}</strong></div>
           </div>
         </div>
+
+        <a className="scroll-cue" href="#proof" aria-label={copy.hero.scroll}>
+          <ChevronDown size={18} aria-hidden="true" />
+        </a>
       </section>
 
-      <section className="proof-bar" aria-label={copy.proofAria}>
+      <section className="proof-bar" id="proof" aria-label={copy.proofAria}>
         <div className="shell proof-grid">
           {proofPoints.map((item, index) => {
             const Icon = proofIcons[index] ?? Sparkles;

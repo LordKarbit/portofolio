@@ -514,12 +514,14 @@ main { overflow: clip; }
 .header-actions > .button:hover { color: #fff; background: var(--gradient-hover); }
 
 .hero {
+  position: relative;
   min-height: 810px;
   padding-block: 96px 112px;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 70px;
   border-bottom: 1px solid var(--line);
 }
+.scroll-cue { display: none; }
 .hero-copy { min-width: 0; }
 .kicker,
 .eyebrow,
@@ -1011,6 +1013,23 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
   .hero-actions { margin-top: 8px; gap: 10px; }
   .hero-actions { align-items: flex-start; }
   .hero-quick-links { display: none; }
+  .scroll-cue {
+    position: absolute;
+    right: 2px;
+    bottom: 14px;
+    z-index: 4;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 1, 79, 0.22);
+    border-radius: 50%;
+    color: var(--accent);
+    background: rgba(248, 242, 233, 0.78);
+    box-shadow: 4px 4px 10px rgba(190, 179, 162, 0.42), -3px -3px 9px rgba(255, 252, 247, 0.72);
+    backdrop-filter: blur(8px);
+    animation: scroll-cue-float 1.8s ease-in-out infinite;
+  }
   .portrait-wrap { min-height: 292px; }
   .portrait-card { width: 100%; height: calc(100% + 22px); }
   .portrait-label { gap: 9px; padding: 10px 12px; }
@@ -1068,6 +1087,11 @@ main[lang="zh-CN"] .hero-lead,
 main[lang="zh-CN"] .about-copy > p:not(.eyebrow),
 main[lang="zh-CN"] .timeline-summary,
 main[lang="zh-CN"] .timeline-card li { line-height: 1.9; }
+
+@keyframes scroll-cue-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
