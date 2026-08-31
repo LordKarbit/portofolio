@@ -986,7 +986,7 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
   .language-switcher { padding: 3px; }
   .language-switcher button { min-width: 27px; height: 27px; padding-inline: 5px; font-size: 9px; }
   .header-actions > .button { min-height: 44px; padding-inline: 13px; font-size: 10px; }
-  .hero { min-height: auto; padding-block: 14px 68px; gap: 24px; }
+  .hero { min-height: auto; padding-block: 8px 52px; gap: 8px; }
   .hero-copy { display: contents; }
   .kicker { grid-row: 1; }
   .hero h1 { grid-row: 2; }
@@ -994,18 +994,25 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
   .hero-lead { grid-row: 4; }
   .hero-actions { grid-row: 5; }
   .hero-quick-links { grid-row: 6; }
-  .kicker { margin-bottom: 16px; font-size: 11px; line-height: 1.45; }
-  .hero h1 { font-size: clamp(38px, 10.5vw, 48px); line-height: 1.08; }
-  .hero-role-line { min-height: 2.55em; display: block; margin-top: 6px; font-size: 24px; line-height: 1.24; }
-  .role-rotator { display: block; width: 100%; height: 2.55em; }
+  .kicker {
+    max-width: 100%;
+    margin-bottom: 0;
+    font-size: clamp(7px, 2.25vw, 9px);
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .hero h1 { font-size: clamp(36px, 9.8vw, 44px); line-height: 1.04; }
+  .hero-role-line { min-height: 2.45em; display: block; margin-top: 3px; font-size: 21px; line-height: 1.2; }
+  .role-rotator { display: block; width: 100%; height: 2.45em; }
   .role-rotator-words { align-items: flex-start; }
   .typewriter-text { white-space: normal; }
-  .hero-lead { margin-top: 16px; font-size: 14px; line-height: 25px; }
-  .hero-actions { margin-top: 24px; gap: 16px; }
+  .hero-lead { margin-top: 2px; font-size: 13px; line-height: 21px; }
+  .hero-actions { margin-top: 8px; gap: 10px; }
   .hero-actions { align-items: flex-start; }
-  .hero-quick-links { margin-top: 38px; grid-template-columns: 1fr; gap: 26px; }
-  .portrait-wrap { min-height: 330px; }
-  .portrait-card { width: 100%; height: calc(100% + 40px); }
+  .hero-quick-links { margin-top: 28px; grid-template-columns: 1fr; gap: 26px; }
+  .portrait-wrap { min-height: 238px; }
+  .portrait-card { width: 100%; height: calc(100% + 22px); }
   .portrait-label { gap: 9px; padding: 10px 12px; }
   .portrait-label span { font-size: 9px; }
   .portrait-label strong { font-size: 11px; line-height: 1.4; }
