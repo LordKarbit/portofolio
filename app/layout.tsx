@@ -75,13 +75,13 @@ export const metadata: Metadata = {
     locale: "id_ID",
     url: "/",
     siteName: "Portfolio Samsul Arifin",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Samsul Arifin — Business Process & Operations Systems" }],
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Samsul Arifin — Business Process & Operations Systems" }],
   },
   twitter: {
     card: "summary_large_image",
     title: socialTitle,
     description: socialDescription,
-    images: ["/og.png"],
+    images: ["/og.jpg"],
   },
 };
 
