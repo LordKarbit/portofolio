@@ -4,9 +4,11 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
+import { StructuredData } from "@/components/structured-data";
 import { projects as fallbackProjects } from "@/lib/content";
 import { getPublicProject, getPublicProjects } from "@/lib/data";
 import { localeHtmlLang, localizeProject, localizeProjects, resolveLocale, uiCopy, withLocale } from "@/lib/localization";
+import { siteUrl } from "@/lib/site-url";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -28,10 +30,12 @@ export async function generateMetadata({ params, searchParams }: ProjectPageProp
   return {
     title,
     description: project.summary,
+    alternates: { canonical: `/projects/${slug}` },
     openGraph: {
       title,
       description: project.summary,
       type: "article",
+      url: `/projects/${slug}`,
       images: [{ url: project.image, alt: `${uiCopy[locale].work.image} ${project.title}` }],
     },
     twitter: {
@@ -54,9 +58,39 @@ export default async function ProjectPage({ params, searchParams }: ProjectPageP
 
   const currentIndex = allProjects.findIndex((item) => item.slug === project.slug);
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+  const projectUrl = `${siteUrl}/projects/${project.slug}`;
+  const projectImage = project.image.startsWith("http") ? project.image : `${siteUrl}${project.image}`;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        "@id": `${projectUrl}#case-study`,
+        url: projectUrl,
+        name: `${project.title} — Operations Case Study`,
+        headline: project.summary,
+        description: project.outcome,
+        image: projectImage,
+        dateCreated: project.year,
+        inLanguage: localeHtmlLang[locale],
+        author: { "@id": `${siteUrl}/#person` },
+        creator: { "@id": `${siteUrl}/#person` },
+        keywords: project.tags.join(", "),
+        about: [project.eyebrow, project.role],
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Portfolio", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: project.title, item: projectUrl },
+        ],
+      },
+    ],
+  };
 
   return (
     <main lang={localeHtmlLang[locale]}>
+      <StructuredData data={structuredData} />
       <SiteHeader locale={locale} />
       <article className="case-study shell">
         <Link className="case-back" href={withLocale("/#work", locale)}><ArrowLeft size={17} /> {copy.case.back}</Link>

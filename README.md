@@ -31,7 +31,7 @@ Buka `http://localhost:3000`. Tanpa variabel Supabase, website masuk ke **mode p
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL=https://www.samsularifin.cc
 ```
 
 5. Mulai ulang server lokal dan masuk melalui `http://localhost:3000/admin/login`.
@@ -42,7 +42,7 @@ Jika user Auth dibuat setelah SQL dijalankan, jalankan kembali perintah terakhir
 
 1. Simpan folder ini ke repository Git.
 2. Import repository tersebut pada Vercel dengan framework preset **Next.js**.
-3. Tambahkan tiga environment variables dari `.env.example`. Untuk `NEXT_PUBLIC_SITE_URL`, gunakan domain produksi Vercel atau custom domain.
+3. Tambahkan tiga environment variables dari `.env.example`. Gunakan `https://www.samsularifin.cc` untuk `NEXT_PUBLIC_SITE_URL`.
 4. Jalankan deploy. Build command menggunakan `npm run build`.
 5. Di Supabase, tambahkan domain produksi pada konfigurasi URL Auth bila kelak menggunakan tautan email atau provider OAuth.
 

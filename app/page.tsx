@@ -31,7 +31,9 @@ import {
 import { ProjectCard } from "@/components/project-card";
 import { RoleRotator } from "@/components/role-rotator";
 import { SiteHeader } from "@/components/site-header";
+import { StructuredData } from "@/components/structured-data";
 import { getPublicExperiences, getPublicProfile, getPublicProjects, getPublicSkills } from "@/lib/data";
+import { siteUrl } from "@/lib/site-url";
 import {
   localeHtmlLang,
   localizeExperiences,
@@ -109,9 +111,68 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const whatsappHref = `https://wa.me/${currentProfile.phone.replace(/\D/g, "")}?text=${encodeURIComponent(
     copy.hero.whatsapp,
   )}`;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        "@id": `${siteUrl}/#profile-page`,
+        url: siteUrl,
+        name: "Samsul Arifin — Business Process & Operations Systems",
+        description: currentProfile.intro,
+        inLanguage: localeHtmlLang[locale],
+        dateModified: "2026-09-01",
+        mainEntity: { "@id": `${siteUrl}/#person` },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+      },
+      {
+        "@type": "Person",
+        "@id": `${siteUrl}/#person`,
+        name: currentProfile.name,
+        url: siteUrl,
+        image: `${siteUrl}/images/profile.png`,
+        jobTitle: currentProfile.role,
+        description: currentProfile.about,
+        email: currentProfile.email,
+        telephone: currentProfile.phone,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Sidoarjo",
+          addressRegion: "Jawa Timur",
+          addressCountry: "ID",
+        },
+        sameAs: [currentProfile.linkedin, "https://github.com/LordKarbit"],
+        knowsAbout: [
+          "Business Process Improvement",
+          "Operational Excellence",
+          "Operations Systems",
+          "Business Systems Analysis",
+          "Operations Transformation",
+          "Process Mapping",
+          "Requirements and User Acceptance Testing",
+          "KPI and Performance Systems",
+          "AI-assisted Workflow Automation",
+        ],
+        hasOccupation: [
+          { "@type": "Occupation", name: "Business Process Improvement Specialist" },
+          { "@type": "Occupation", name: "Operations Systems Specialist" },
+          { "@type": "Occupation", name: "Business Systems Analyst" },
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "Portfolio Samsul Arifin",
+        inLanguage: ["id-ID", "en", "zh-CN"],
+        publisher: { "@id": `${siteUrl}/#person` },
+      },
+    ],
+  };
 
   return (
     <main lang={localeHtmlLang[locale]}>
+      <StructuredData data={structuredData} />
       <SiteHeader locale={locale} />
 
       <section className="hero shell" id="home">

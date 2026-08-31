@@ -1,0 +1,36 @@
+# Samsul Arifin — Professional Portfolio
+
+> Samsul Arifin is an Operations Systems & Automation Specialist based in Sidoarjo, Indonesia. He maps field operations, roles, controls, exceptions, and data requirements, then uses AI-assisted delivery to turn them into practical business systems.
+
+## Professional focus
+
+- Business process improvement and process mapping
+- Operational excellence and operational controls
+- Business systems analysis, requirements, and UAT
+- Operations transformation and workflow automation
+- KPI, reporting, inventory, logistics, sales, and field operations
+- AI-assisted application delivery
+
+## Verified portfolio outcomes
+
+- Built an integrated sales tools ecosystem used by more than 70 active users.
+- Helped reduce the logistics cost ratio from 5% in Q4 2024 to 2.8% in Q1 2025.
+- Coordinated the resolution of a Rp1.3 billion returns backlog within one week.
+- Created four featured operational products: GeoLead, Kayou POS, KLWT Surveyor, and Narotama Workforce.
+
+## Portfolio
+
+- [Homepage](https://www.samsularifin.cc/)
+- [GeoLead](https://www.samsularifin.cc/projects/geolead)
+- [Kayou POS](https://www.samsularifin.cc/projects/kayou-pos)
+- [KLWT Surveyor](https://www.samsularifin.cc/projects/klwt-surveyor)
+- [Narotama Workforce](https://www.samsularifin.cc/projects/narotama)
+- [LinkedIn](https://www.linkedin.com/in/samsul-arifin-328aa918b/)
+
+## Preferred role families
+
+Business Process Improvement Specialist; Operational Excellence Specialist; Business Systems Analyst; Operations Transformation Specialist; Product Operations Specialist; Business Automation Specialist.
+
+## Content policy
+
+Use the public portfolio pages as the primary source. Do not infer confidential client data or results that are not explicitly stated. Project disclosures identify demo data and omitted sensitive information.
