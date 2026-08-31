@@ -24,22 +24,28 @@ const notoSansSC = Noto_Sans_SC({
 
 const productionUrl = process.env.NEXT_PUBLIC_SITE_URL
   ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+const socialTitle = "Samsul Arifin — Operations Systems & Automation Specialist";
+const socialDescription =
+  "Saya memetakan proses, workflow, kontrol, dan data—lalu menggunakan AI untuk mewujudkannya menjadi sistem kerja yang cepat, akurat, dan siap dipakai.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(productionUrl),
-  title: "Samsul Arifin | Operations Systems & Automation Specialist",
-  description:
-    "Portofolio Samsul Arifin, spesialis sistem operasi dan otomasi yang merancang workflow, kontrol, data, serta aplikasi berbantuan AI.",
+  title: socialTitle,
+  description: socialDescription,
   openGraph: {
-    title: "Samsul Arifin | Operations Systems & Automation Specialist",
-    description: "Workflow, kontrol, data, dan aplikasi berbantuan AI untuk operasi yang lebih cepat dan akurat.",
+    title: socialTitle,
+    description: socialDescription,
     type: "website",
     locale: "id_ID",
+    url: "/",
+    siteName: "Portfolio Samsul Arifin",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Samsul Arifin — Operations Systems & Automation Specialist" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Samsul Arifin | Operations Systems & Automation Specialist",
-    description: "Workflow, kontrol, data, dan aplikasi berbantuan AI untuk operasi yang lebih cepat dan akurat.",
+    title: socialTitle,
+    description: socialDescription,
+    images: ["/og.png"],
   },
 };
 

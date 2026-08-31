@@ -23,10 +23,23 @@ export async function generateMetadata({ params, searchParams }: ProjectPageProp
   const rawProject = await getPublicProject(slug);
   if (!rawProject) return { title: uiCopy[locale].case.missing };
   const project = localizeProject(rawProject, locale);
+  const title = `${project.title} | ${uiCopy[locale].case.suffix}`;
 
   return {
-    title: `${project.title} | ${uiCopy[locale].case.suffix}`,
+    title,
     description: project.summary,
+    openGraph: {
+      title,
+      description: project.summary,
+      type: "article",
+      images: [{ url: project.image, alt: `${uiCopy[locale].work.image} ${project.title}` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: project.summary,
+      images: [project.image],
+    },
   };
 }
 
