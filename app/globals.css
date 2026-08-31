@@ -522,6 +522,7 @@ main { overflow: clip; }
   border-bottom: 1px solid var(--line);
 }
 .scroll-cue { display: none; }
+.mobile-quick-links { display: none; }
 .hero-copy { min-width: 0; }
 .kicker,
 .eyebrow,
@@ -988,7 +989,7 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
   .language-switcher { padding: 3px; }
   .language-switcher button { min-width: 27px; height: 27px; padding-inline: 5px; font-size: 9px; }
   .header-actions > .button { min-height: 44px; padding-inline: 13px; font-size: 10px; }
-  .hero { min-height: auto; padding-block: 8px 52px; gap: 8px; }
+  .hero { min-height: auto; padding-block: 8px 38px; gap: 8px; }
   .hero-copy { display: contents; }
   .kicker { grid-row: 1; }
   .hero h1 { grid-row: 2; }
@@ -1030,7 +1031,7 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
     backdrop-filter: blur(8px);
     animation: scroll-cue-float 1.8s ease-in-out infinite;
   }
-  .portrait-wrap { min-height: 292px; }
+  .portrait-wrap { min-height: 310px; }
   .portrait-card { width: 100%; height: calc(100% + 22px); }
   .portrait-label { gap: 9px; padding: 10px 12px; }
   .portrait-label span { font-size: 9px; }
@@ -1038,6 +1039,13 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
   .portrait-label-role { right: 0; bottom: 4%; max-width: 75%; }
   .portrait-label-location { bottom: 34%; left: 0; max-width: 58%; }
   .proof-bar { padding-bottom: 82px; }
+  .mobile-quick-links {
+    padding-block: 42px 48px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .mobile-quick-links .quick-icon { width: 52px; height: 52px; }
   .proof-grid { grid-template-columns: 1fr; gap: 16px; }
   .proof-item,
   .proof-item:first-child,

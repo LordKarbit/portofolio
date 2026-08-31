@@ -178,6 +178,30 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </section>
 
       <section className="proof-bar" id="proof" aria-label={copy.proofAria}>
+        <div className="shell mobile-quick-links">
+          <div className="quick-link-group">
+            <p>{copy.hero.connect}</p>
+            <div>
+              <a className="quick-icon quick-icon-linkedin" href={currentProfile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
+                <FaLinkedinIn size={20} aria-hidden="true" />
+              </a>
+              <a className="quick-icon quick-icon-gmail" href={`mailto:${currentProfile.email}`} aria-label="Gmail" title="Gmail">
+                <SiGmail size={20} aria-hidden="true" />
+              </a>
+              <a className="quick-icon quick-icon-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp">
+                <FaWhatsapp size={21} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+          <div className="quick-link-group">
+            <p>{copy.hero.strengths}</p>
+            <div>
+              <span className="quick-icon" title="Process mapping"><Workflow size={20} aria-hidden="true" /></span>
+              <span className="quick-icon" title="Operational control"><ChartNoAxesCombined size={20} aria-hidden="true" /></span>
+              <span className="quick-icon" title="AI-assisted delivery"><Bot size={20} aria-hidden="true" /></span>
+            </div>
+          </div>
+        </div>
         <div className="shell proof-grid">
           {proofPoints.map((item, index) => {
             const Icon = proofIcons[index] ?? Sparkles;
