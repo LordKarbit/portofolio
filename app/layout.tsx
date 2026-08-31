@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   creator: "Samsul Arifin",
   publisher: "Samsul Arifin",
   category: "Professional Portfolio",
+  verification: {
+    google: "u5RGwTpCTGX1834Muj6-S6Ja3jcXZgRNqvHXoWdL1ak",
+  },
   keywords: [
     "Business Process Improvement",
     "Operational Excellence",
