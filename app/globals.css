@@ -1010,8 +1010,8 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
   .hero-lead { margin-top: 2px; font-size: 13px; line-height: 21px; }
   .hero-actions { margin-top: 8px; gap: 10px; }
   .hero-actions { align-items: flex-start; }
-  .hero-quick-links { margin-top: 28px; grid-template-columns: 1fr; gap: 26px; }
-  .portrait-wrap { min-height: 238px; }
+  .hero-quick-links { display: none; }
+  .portrait-wrap { min-height: 292px; }
   .portrait-card { width: 100%; height: calc(100% + 22px); }
   .portrait-label { gap: 9px; padding: 10px 12px; }
   .portrait-label span { font-size: 9px; }
