@@ -29,6 +29,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
+import { PdfModalCard } from "@/components/pdf-modal-card";
 import { RoleRotator } from "@/components/role-rotator";
 import { SiteHeader } from "@/components/site-header";
 import { StructuredData } from "@/components/structured-data";
@@ -406,7 +407,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           {legacyWork.map((item, index) => {
             const Icon = legacyIcons[index] ?? Sparkles;
             return (
-              <article className="legacy-card reveal" key={item.title}>
+              <PdfModalCard key={item.title} locale={locale} pdf={item.pdf} title={item.title}>
                 <div className="legacy-image">
                   <Image src={item.image} alt={`${copy.work.image} ${item.title}`} width={800} height={600} sizes="(max-width: 800px) 100vw, 33vw" />
                 </div>
@@ -415,7 +416,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   <h3>{item.title}</h3>
                   <p>{item.copy}</p>
                 </div>
-              </article>
+              </PdfModalCard>
             );
           })}
         </div>

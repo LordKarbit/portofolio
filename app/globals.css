@@ -617,6 +617,8 @@ main { overflow: clip; }
 }
 .language-switcher {
   display: inline-flex;
+  width: 152px;
+  min-height: 52px;
   padding: 4px;
   border: 1px solid rgba(30, 33, 37, 0.08);
   border-radius: 8px;
@@ -624,15 +626,16 @@ main { overflow: clip; }
   box-shadow: inset 2px 2px 5px rgba(184, 172, 154, 0.3), inset -2px -2px 5px rgba(255, 252, 247, 0.72);
 }
 .language-switcher button {
-  min-width: 31px;
-  height: 30px;
-  padding: 0 7px;
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0 9px;
   border: 0;
   border-radius: 6px;
   color: #555b63;
   background: transparent;
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
   transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease;
@@ -984,6 +987,99 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
 
 .legacy-grid { gap: 28px; }
 .legacy-card { border-radius: 10px; background: var(--gradient-card); box-shadow: var(--shadow-small); transition: transform var(--motion); }
+.pdf-modal-trigger {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: zoom-in;
+}
+.pdf-modal-trigger:focus-visible { outline: 3px solid rgba(255, 1, 79, 0.38); outline-offset: 5px; }
+.pdf-card-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(28, 31, 36, 0.72);
+  box-shadow: 0 8px 22px rgba(20, 22, 26, 0.2);
+  backdrop-filter: blur(10px);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+.pdf-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(25, 27, 31, 0.72);
+  backdrop-filter: blur(14px);
+  animation: pdf-backdrop-in 0.22s ease both;
+}
+.pdf-modal-panel {
+  width: min(1180px, 100%);
+  height: min(900px, calc(100svh - 36px));
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  background: #e9e4dc;
+  box-shadow: 0 30px 90px rgba(10, 12, 15, 0.45);
+  animation: pdf-panel-in 0.3s cubic-bezier(.22, 1, .36, 1) both;
+}
+.pdf-modal-toolbar {
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 14px 12px 20px;
+  border-bottom: 1px solid rgba(39, 42, 48, 0.12);
+  background: rgba(248, 243, 235, 0.96);
+}
+.pdf-modal-toolbar > div { min-width: 0; display: grid; gap: 3px; }
+.pdf-modal-toolbar > div > span { display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+.pdf-modal-toolbar strong { overflow: hidden; color: #292c31; font-family: var(--font-heading); font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.pdf-modal-toolbar p { margin: 0; color: #686b72; font-size: 11px; }
+.pdf-modal-toolbar nav { display: flex; align-items: center; gap: 7px; }
+.pdf-modal-toolbar nav a,
+.pdf-modal-toolbar nav button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 13px;
+  border: 1px solid rgba(43, 46, 52, 0.12);
+  border-radius: 10px;
+  color: #3a3d43;
+  background: #f8f3eb;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--motion), color var(--motion), transform var(--motion);
+}
+.pdf-modal-toolbar nav a:hover,
+.pdf-modal-toolbar nav button:hover { border-color: rgba(255, 1, 79, 0.32); color: var(--accent); transform: translateY(-1px); }
+.pdf-modal-toolbar nav button { width: 42px; padding: 0; }
+.pdf-modal-viewer { height: calc(100% - 76px); background: #d8d3ca; }
+.pdf-modal-viewer iframe { width: 100%; height: 100%; border: 0; touch-action: pan-x pan-y pinch-zoom; }
+
+@keyframes pdf-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pdf-panel-in { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .legacy-image { aspect-ratio: 4 / 2.85; }
 .legacy-image img { transition: transform 0.5s ease-in-out; }
 .legacy-card > div:last-child { position: relative; padding: 28px; }
@@ -1118,12 +1214,12 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
 @media (max-width: 680px) {
   html { scroll-padding-top: 90px; }
   .shell { width: min(100% - 28px, 1305px); }
-  .site-header { min-height: 76px; padding: 12px 14px; }
+  .site-header { min-height: 76px; padding: 12px 14px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
   .brand-mark { width: 44px; height: 44px; }
-  .header-actions { gap: 7px; }
-  .language-switcher { padding: 3px; }
-  .language-switcher button { min-width: 27px; height: 27px; padding-inline: 5px; font-size: 9px; }
-  .header-actions > .button { min-height: 44px; padding-inline: 13px; font-size: 10px; }
+  .header-actions { display: contents; }
+  .language-switcher { width: 116px; min-height: 44px; justify-self: center; padding: 3px; }
+  .language-switcher button { flex: 1; min-width: 0; height: 36px; padding-inline: 5px; font-size: 10px; }
+  .header-actions > .button { min-height: 44px; justify-self: end; padding-inline: 13px; font-size: 10px; }
   .hero {
     height: calc(100svh - 76px);
     min-height: 640px;
@@ -1283,4 +1379,14 @@ main[lang="zh-CN"] .timeline-card li { line-height: 1.9; }
   .admin-project-thumb { width: 84px; }
   .admin-skill-editor form { padding: 12px; grid-template-columns: 1fr 74px; border: 1px solid #e0e3e9; border-radius: 12px; background: #fff; }
   .admin-skill-editor form input:nth-of-type(1), .admin-skill-editor form input:nth-of-type(2) { grid-column: 1 / -1; }
+  .pdf-modal-backdrop { padding: 0; }
+  .pdf-modal-panel { width: 100%; height: 100svh; border: 0; border-radius: 0; }
+  .pdf-modal-toolbar { min-height: 68px; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 10px 10px 10px 14px; }
+  .pdf-modal-toolbar p { display: none; }
+  .pdf-modal-toolbar strong { font-size: 13px; }
+  .pdf-modal-toolbar nav { gap: 5px; }
+  .pdf-modal-toolbar nav a,
+  .pdf-modal-toolbar nav button { width: 40px; min-height: 40px; padding: 0; }
+  .pdf-modal-toolbar nav a span { display: none; }
+  .pdf-modal-viewer { height: calc(100% - 68px); }
 }

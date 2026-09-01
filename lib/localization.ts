@@ -318,18 +318,18 @@ export function localizeSkillCategory(category: string, locale: Locale) {
 
 export const localizedLegacy = {
   id: [
-    { title: "Sales Tools Ecosystem", copy: "AppSheet, Google Sheets, dan Tableau untuk registrasi toko, visit report, konsinyasi, pembayaran, recall, feedback, serta kontrol berbasis peran.", image: "/images/legacy/sales-tools.png" },
-    { title: "KPI Monitoring", copy: "Monitoring sales regional, aktivitas harian, GMV, peta toko, dan analisis kategori produk untuk memusatkan coaching pada area yang tertinggal.", image: "/images/legacy/kpi-monitoring.png" },
-    { title: "Reporting & Automation", copy: "Tableau, formula spreadsheet lintas sumber, serta Apps Script untuk memangkas pekerjaan pelaporan dan input data berulang.", image: "/images/legacy/tableau-reporting.png" },
+    { title: "Sales Tools Ecosystem", copy: "AppSheet, Google Sheets, dan Tableau untuk registrasi toko, visit report, konsinyasi, pembayaran, recall, feedback, serta kontrol berbasis peran.", image: "/images/legacy/sales-tools.png", pdf: "/documents/sales-tools.pdf" },
+    { title: "KPI Monitoring", copy: "Monitoring sales regional, aktivitas harian, GMV, peta toko, dan analisis kategori produk untuk memusatkan coaching pada area yang tertinggal.", image: "/images/legacy/kpi-monitoring.png", pdf: "/documents/kpi-monitoring.pdf" },
+    { title: "Reporting & Automation", copy: "Tableau, formula spreadsheet lintas sumber, serta Apps Script untuk memangkas pekerjaan pelaporan dan input data berulang.", image: "/images/legacy/tableau-reporting.png", pdf: "/documents/tableau-portfolio.pdf" },
   ],
   en: [
-    { title: "Sales Tools Ecosystem", copy: "AppSheet, Google Sheets, and Tableau for store registration, visit reports, consignment, payments, recalls, feedback, and role-based controls.", image: "/images/legacy/sales-tools.png" },
-    { title: "KPI Monitoring", copy: "Regional sales, daily activity, GMV, store maps, and category analysis that helped managers focus coaching on underperforming areas.", image: "/images/legacy/kpi-monitoring.png" },
-    { title: "Reporting & Automation", copy: "Tableau, cross-source spreadsheet formulas, and Apps Script that reduced repetitive reporting and data entry.", image: "/images/legacy/tableau-reporting.png" },
+    { title: "Sales Tools Ecosystem", copy: "AppSheet, Google Sheets, and Tableau for store registration, visit reports, consignment, payments, recalls, feedback, and role-based controls.", image: "/images/legacy/sales-tools.png", pdf: "/documents/sales-tools.pdf" },
+    { title: "KPI Monitoring", copy: "Regional sales, daily activity, GMV, store maps, and category analysis that helped managers focus coaching on underperforming areas.", image: "/images/legacy/kpi-monitoring.png", pdf: "/documents/kpi-monitoring.pdf" },
+    { title: "Reporting & Automation", copy: "Tableau, cross-source spreadsheet formulas, and Apps Script that reduced repetitive reporting and data entry.", image: "/images/legacy/tableau-reporting.png", pdf: "/documents/tableau-portfolio.pdf" },
   ],
   zh: [
-    { title: "销售工具体系", copy: "使用 AppSheet、Google Sheets 和 Tableau 管理门店注册、拜访报告、寄售、付款、召回、反馈与角色权限。", image: "/images/legacy/sales-tools.png" },
-    { title: "KPI 监控", copy: "整合区域销售、每日活动、GMV、门店地图和品类分析，帮助经理聚焦表现落后的区域。", image: "/images/legacy/kpi-monitoring.png" },
-    { title: "报表与自动化", copy: "通过 Tableau、跨数据源表格公式和 Apps Script，减少重复报表与数据录入工作。", image: "/images/legacy/tableau-reporting.png" },
+    { title: "销售工具体系", copy: "使用 AppSheet、Google Sheets 和 Tableau 管理门店注册、拜访报告、寄售、付款、召回、反馈与角色权限。", image: "/images/legacy/sales-tools.png", pdf: "/documents/sales-tools.pdf" },
+    { title: "KPI 监控", copy: "整合区域销售、每日活动、GMV、门店地图和品类分析，帮助经理聚焦表现落后的区域。", image: "/images/legacy/kpi-monitoring.png", pdf: "/documents/kpi-monitoring.pdf" },
+    { title: "报表与自动化", copy: "通过 Tableau、跨数据源表格公式和 Apps Script，减少重复报表与数据录入工作。", image: "/images/legacy/tableau-reporting.png", pdf: "/documents/tableau-portfolio.pdf" },
   ],
 };
