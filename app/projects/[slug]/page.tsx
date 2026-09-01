@@ -36,7 +36,7 @@ export async function generateMetadata({ params, searchParams }: ProjectPageProp
       description: project.summary,
       type: "article",
       url: `/projects/${slug}`,
-      images: [{ url: project.image, alt: `${uiCopy[locale].work.image} ${project.title}` }],
+      images: [{ url: project.image, alt: project.imageAlt || `${uiCopy[locale].work.image} ${project.title}` }],
     },
     twitter: {
       card: "summary_large_image",
@@ -108,7 +108,7 @@ export default async function ProjectPage({ params, searchParams }: ProjectPageP
         </header>
 
         <div className="case-cover">
-          <Image src={project.image} alt={`${copy.work.image} ${project.title}`} fill preload sizes="(max-width: 900px) 100vw, 1180px" />
+          <Image src={project.image} alt={project.imageAlt || `${copy.work.image} ${project.title}`} fill preload sizes="(max-width: 900px) 100vw, 1180px" style={{ objectPosition: project.imagePosition || "center" }} />
         </div>
 
         <div className="case-narrative">

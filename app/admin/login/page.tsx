@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { LockKeyhole } from "lucide-react";
+import { LockKeyhole, ShieldCheck } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 import { loginAction } from "@/app/admin/actions";
+import { ADMIN_EMAIL } from "@/lib/auth";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 const messages: Record<string, string> = {
   setup: "Hubungkan proyek Supabase terlebih dahulu sebelum masuk.",
-  credentials: "Email atau kata sandi belum cocok.",
-  "not-authorized": "Akun ini belum terdaftar sebagai admin portofolio.",
+  "not-authorized": "Akun Google ini tidak memiliki izin untuk mengelola portofolio.",
+  oauth: "Login Google belum berhasil. Silakan coba kembali.",
 };
 
 export default async function AdminLoginPage({ searchParams }: PageProps<"/admin/login">) {
@@ -20,15 +22,17 @@ export default async function AdminLoginPage({ searchParams }: PageProps<"/admin
         <span className="admin-login-icon"><LockKeyhole size={24} /></span>
         <p className="eyebrow">Ruang pengelola</p>
         <h1>Kelola portofolio</h1>
-        <p>Masuk untuk memperbarui profil, studi kasus, perjalanan karier, dan daftar keahlian.</p>
+        <p>Kelola profil, studi kasus, perjalanan karier, keahlian, dan media website dari satu tempat.</p>
 
         {errorKey && <div className="form-message error" role="alert">{messages[errorKey] ?? "Belum berhasil masuk. Silakan coba kembali."}</div>}
 
         {isSupabaseConfigured ? (
           <form className="admin-form" action={loginAction}>
-            <label>Email<input name="email" type="email" autoComplete="email" required /></label>
-            <label>Kata sandi<input name="password" type="password" autoComplete="current-password" required /></label>
-            <button className="button" type="submit">Masuk ke admin</button>
+            <button className="google-login-button" type="submit"><FcGoogle size={21} /> Masuk dengan Google</button>
+            <div className="admin-access-note">
+              <ShieldCheck size={18} aria-hidden="true" />
+              <p>Hanya akun <strong>{ADMIN_EMAIL}</strong> yang diizinkan. Tidak tersedia pendaftaran atau metode login lain.</p>
+            </div>
           </form>
         ) : (
           <div className="setup-notice">

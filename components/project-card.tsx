@@ -21,10 +21,11 @@ export function ProjectCard({ project, index, locale }: { project: Project; inde
       <Link className="project-image" href={projectHref} aria-label={`${copy.read} ${project.title}`}>
         <Image
           src={project.image}
-          alt={`${copy.image} ${project.title}`}
+          alt={project.imageAlt || `${copy.image} ${project.title}`}
           fill
           sizes="(max-width: 760px) 100vw, 50vw"
           priority={index < 2}
+          style={{ objectPosition: project.imagePosition || "center" }}
         />
       </Link>
       <div className="project-copy">

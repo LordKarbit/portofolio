@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { notFound } from "next/navigation";
 import { deleteProjectAction, updateProjectAction } from "@/app/admin/actions";
 import { AdminProjectForm } from "@/components/admin-project-form";
@@ -18,13 +18,16 @@ export default async function EditProjectPage({ params, searchParams }: PageProp
     <main className="admin-page edit-project-page">
       <header className="admin-header">
         <div><span className="brand-mark">SA</span><div><strong>Edit studi kasus</strong><small>{project.title}</small></div></div>
-        <Link href="/admin"><ArrowLeft size={16} /> Kembali ke dashboard</Link>
+        <div className="admin-header-actions">
+          {project.published && <Link href={`/projects/${project.slug}`} target="_blank">Lihat halaman <ExternalLink size={15} /></Link>}
+          <Link href="/admin#projects"><ArrowLeft size={16} /> Kembali</Link>
+        </div>
       </header>
       <div className="edit-project-shell">
         {query.saved && <div className="form-message success">Perubahan proyek berhasil disimpan.</div>}
         {query.error && <div className="form-message error">{String(query.error)}</div>}
         <section className="admin-panel">
-          <div className="admin-panel-heading"><div><p className="eyebrow">{project.eyebrow}</p><h1>{project.title}</h1></div></div>
+          <div className="admin-panel-heading"><div><p className="eyebrow">{project.eyebrow}</p><h1>{project.title}</h1></div><span>{project.published ? "Publik" : "Draf"}</span></div>
           <AdminProjectForm action={updateProjectAction} project={project} submitLabel="Simpan perubahan" />
           <div className="danger-zone">
             <div><strong>Hapus proyek</strong><p>Tindakan ini menghapus studi kasus dari database.</p></div>

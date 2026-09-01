@@ -31,6 +31,8 @@ export function mapProjectRow(row: Row): Project {
     summary: asString(row.summary),
     metric: asString(row.metric),
     image: asString(row.image_url, "/images/projects/geolead.jpg"),
+    imageAlt: asString(row.image_alt) || undefined,
+    imagePosition: asString(row.image_position, "center"),
     tags: asStringArray(row.tags),
     featured: Boolean(row.featured),
     published: Boolean(row.published),
@@ -112,6 +114,7 @@ export async function getPublicExperiences(): Promise<Experience[]> {
     company: asString(row.company),
     summary: asString(row.summary),
     achievements: asStringArray(row.achievements),
+    logo: asString(row.logo_url) || undefined,
     sortOrder: Number(row.sort_order ?? 0),
     published: Boolean(row.published),
   }));

@@ -32,6 +32,8 @@ create table if not exists public.projects (
   summary text not null default '',
   metric text not null default '',
   image_url text not null default '',
+  image_alt text not null default '',
+  image_position text not null default 'center',
   tags text[] not null default '{}',
   year text not null default '',
   role text not null default '',
@@ -54,6 +56,7 @@ create table if not exists public.experiences (
   company text not null,
   summary text not null default '',
   achievements text[] not null default '{}',
+  logo_url text not null default '',
   published boolean not null default true,
   sort_order integer not null default 0,
   created_at timestamptz not null default now(),
@@ -83,9 +86,9 @@ stable
 security definer
 set search_path = ''
 as $$
-  select exists (
-    select 1 from public.portfolio_admins where user_id = auth.uid()
-  );
+  select
+    lower(coalesce(auth.jwt() ->> 'email', '')) = 'syamsul.ar313@gmail.com'
+    and coalesce(auth.jwt() -> 'app_metadata' ->> 'provider', '') = 'google';
 $$;
 
 revoke all on function public.is_portfolio_admin() from public;

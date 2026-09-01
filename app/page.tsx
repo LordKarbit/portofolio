@@ -366,7 +366,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                       <div className="timeline-card-head">
                         <div className="timeline-card-identity">
                           <div className={`company-logos${(companyLogos[experience.company]?.length ?? 0) > 1 ? " is-multiple" : ""}`} aria-hidden="true">
-                            {(companyLogos[experience.company] ?? []).map((logo) => (
+                            {(experience.logo ? [{ src: experience.logo, brand: "custom" }] : companyLogos[experience.company] ?? []).map((logo) => (
                               <span className="company-logo-tile" data-brand={logo.brand} key={logo.brand}>
                                 <Image src={logo.src} alt="" fill sizes="92px" />
                               </span>

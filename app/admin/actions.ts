@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { ADMIN_EMAIL, requireAdmin } from "@/lib/auth";
+import { siteUrl } from "@/lib/site-url";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -62,6 +63,8 @@ function projectPayload(formData: FormData, imageUrl: string) {
     summary: value(formData, "summary", 1200),
     metric: value(formData, "metric", 160),
     image_url: imageUrl || "/images/projects/geolead.jpg",
+    image_alt: value(formData, "image_alt", 240),
+    image_position: value(formData, "image_position", 30) || "center",
     tags: list(formData, "tags"),
     year: value(formData, "year", 20),
     role: value(formData, "role", 300),
@@ -77,17 +80,20 @@ function projectPayload(formData: FormData, imageUrl: string) {
   };
 }
 
-export async function loginAction(formData: FormData) {
+export async function loginAction() {
   if (!isSupabaseConfigured) redirect("/admin/login?error=setup");
-  const email = value(formData, "email", 254);
-  const password = value(formData, "password", 200);
-  if (!email || !password) redirect("/admin/login?error=credentials");
-
   const supabase = await createServerSupabaseClient();
   if (!supabase) redirect("/admin/login?error=setup");
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) redirect("/admin/login?error=credentials");
-  redirect("/admin");
+  const callbackOrigin = process.env.NODE_ENV === "development" ? "http://localhost:3000" : siteUrl;
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${callbackOrigin}/auth/callback?next=/admin`,
+      queryParams: { login_hint: ADMIN_EMAIL, prompt: "select_account" },
+    },
+  });
+  if (error || !data.url) redirect("/admin/login?error=oauth");
+  redirect(data.url);
 }
 
 export async function logoutAction() {
@@ -165,14 +171,35 @@ export async function createExperienceAction(formData: FormData) {
     company: value(formData, "company", 160),
     summary: value(formData, "summary", 1200),
     achievements: list(formData, "achievements"),
+    logo_url: value(formData, "logo_url", 1000),
     sort_order: Number(value(formData, "sort_order", 4)) || 0,
-    published: true,
+    published: formData.get("published") === "on",
   };
   if (!payload.title || !payload.company) failure("/admin", "Jabatan dan perusahaan wajib diisi.");
   const { error } = await supabase.from("experiences").insert(payload);
   if (error) failure("/admin", `Pengalaman belum ditambahkan: ${error.message}`);
   revalidatePath("/");
   redirect("/admin?saved=experience");
+}
+
+export async function updateExperienceAction(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  const id = value(formData, "id", 80);
+  const payload = {
+    period: value(formData, "period", 100),
+    title: value(formData, "title", 160),
+    company: value(formData, "company", 160),
+    summary: value(formData, "summary", 1200),
+    achievements: list(formData, "achievements"),
+    logo_url: value(formData, "logo_url", 1000),
+    sort_order: Math.max(0, Math.min(999, Number(value(formData, "sort_order", 4)) || 0)),
+    published: formData.get("published") === "on",
+  };
+  if (!id || !payload.title || !payload.company) failure("/admin", "Data pengalaman belum lengkap.");
+  const { error } = await supabase.from("experiences").update(payload).eq("id", id);
+  if (error) failure("/admin", `Pengalaman belum tersimpan: ${error.message}`);
+  revalidatePath("/");
+  redirect("/admin?saved=experience-updated#experience");
 }
 
 export async function deleteExperienceAction(formData: FormData) {
@@ -189,13 +216,29 @@ export async function createSkillAction(formData: FormData) {
     name: value(formData, "name", 120),
     category: value(formData, "category", 80),
     sort_order: Number(value(formData, "sort_order", 4)) || 0,
-    published: true,
+    published: formData.get("published") === "on",
   };
   if (!payload.name || !payload.category) failure("/admin", "Nama dan kategori keahlian wajib diisi.");
   const { error } = await supabase.from("skills").insert(payload);
   if (error) failure("/admin", `Keahlian belum ditambahkan: ${error.message}`);
   revalidatePath("/");
   redirect("/admin?saved=skill");
+}
+
+export async function updateSkillAction(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  const id = value(formData, "id", 80);
+  const payload = {
+    name: value(formData, "name", 120),
+    category: value(formData, "category", 80),
+    sort_order: Math.max(0, Math.min(999, Number(value(formData, "sort_order", 4)) || 0)),
+    published: formData.get("published") === "on",
+  };
+  if (!id || !payload.name || !payload.category) failure("/admin", "Data keahlian belum lengkap.");
+  const { error } = await supabase.from("skills").update(payload).eq("id", id);
+  if (error) failure("/admin", `Keahlian belum tersimpan: ${error.message}`);
+  revalidatePath("/");
+  redirect("/admin?saved=skill-updated#skills");
 }
 
 export async function deleteSkillAction(formData: FormData) {

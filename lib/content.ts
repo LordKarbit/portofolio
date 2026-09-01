@@ -19,6 +19,8 @@ export type Project = {
   summary: string;
   metric: string;
   image: string;
+  imageAlt?: string;
+  imagePosition?: string;
   tags: string[];
   featured: boolean;
   published?: boolean;
@@ -39,6 +41,7 @@ export type Experience = {
   company: string;
   summary: string;
   achievements: string[];
+  logo?: string;
   sortOrder: number;
   published?: boolean;
 };

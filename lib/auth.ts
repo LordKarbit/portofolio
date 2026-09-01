@@ -3,23 +3,23 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+export const ADMIN_EMAIL = "syamsul.ar313@gmail.com";
+
+export function isAllowedAdmin(user: { email?: string | null; app_metadata?: Record<string, unknown> } | null) {
+  if (!user || user.email?.toLowerCase() !== ADMIN_EMAIL) return false;
+  return user.app_metadata?.provider === "google";
+}
+
 export async function requireAdmin() {
   const supabase = await createServerSupabaseClient();
   if (!supabase) redirect("/admin/login?error=setup");
 
-  const { data: claimsData } = await supabase.auth.getClaims();
-  const userId = claimsData?.claims?.sub;
-  if (!userId) redirect("/admin/login");
-
-  const { data: admin } = await supabase
-    .from("portfolio_admins")
-    .select("user_id")
-    .eq("user_id", userId)
-    .maybeSingle();
-
-  if (!admin) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/admin/login");
+  if (!isAllowedAdmin(user)) {
+    await supabase.auth.signOut();
     redirect("/admin/login?error=not-authorized");
   }
 
-  return { supabase, userId };
+  return { supabase, userId: user.id, user };
 }
