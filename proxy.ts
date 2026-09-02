@@ -1,8 +1,11 @@
 import type { NextRequest } from "next/server";
+import { applyLocaleDetection } from "@/lib/locale-proxy";
 import { refreshSupabaseSession } from "@/lib/supabase/proxy";
 
 export async function proxy(request: NextRequest) {
-  return refreshSupabaseSession(request);
+  const response = await refreshSupabaseSession(request);
+  applyLocaleDetection(request, response);
+  return response;
 }
 
 export const config = {

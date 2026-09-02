@@ -2,9 +2,10 @@ import type { Experience, Profile, Project, Skill } from "@/lib/content";
 
 export type Locale = "id" | "en" | "zh";
 
-export function resolveLocale(value: string | string[] | undefined): Locale {
+export function resolveLocale(value: string | string[] | undefined, cookieValue?: string): Locale {
   const candidate = Array.isArray(value) ? value[0] : value;
-  return candidate === "en" || candidate === "zh" ? candidate : "id";
+  if (candidate !== undefined) return candidate === "en" || candidate === "zh" ? candidate : "id";
+  return cookieValue === "en" || cookieValue === "zh" ? cookieValue : "id";
 }
 
 export function withLocale(path: string, locale: Locale) {
@@ -38,7 +39,7 @@ export const uiCopy = {
     },
     proofAria: "Ringkasan pencapaian",
     capabilities: { eyebrow: "Yang saya kerjakan", title: "Dari proses lapangan menjadi sistem kerja.", intro: "Saya memahami pekerjaan tim, merumuskan aturan dan kontrol, lalu menggunakan AI serta teknologi web untuk mewujudkan solusi yang dapat dipakai." },
-    work: { eyebrow: "Proyek pilihan", title: "Sistem operasional yang saya rancang dan wujudkan.", intro: "GeoLead, Kayou POS, KLWT Surveyor, dan Narotama menangani lead generation, retail multi-booth, survei lapangan, serta workforce operations.", read: "Baca studi kasus", open: "Buka", image: "Tampilan" },
+    work: { eyebrow: "Proyek pilihan", title: "Sistem operasional yang saya rancang dan wujudkan.", intro: "GeoLead, Kayou POS, KLWT Surveyor, dan Narotama menangani lead generation, retail multi-booth, survei lapangan, serta workforce operations.", read: "Baca studi kasus", open: "Buka", image: "Tampilan", visitSite: "Kunjungi situs" },
     about: { eyebrow: "Profil", title: "Saya membawa konteks operasi ke dalam setiap sistem.", openLinkedin: "Buka LinkedIn", skills: "Kemampuan & alat kerja" },
     journey: { eyebrow: "Perjalanan profesional", title: "Lima tahun memperbaiki proses melalui operasi, data, dan sistem.", intro: "Riwayat ini menjelaskan konteks di balik produk yang saya bangun: return operations, sales leadership, analisis data, logistik, dan kontrol proses.", latest: "Karier terbaru", latestTitle: "Produk & operasi", foundation: "Fondasi karier", foundationTitle: "Data & kontrol proses" },
     legacy: { eyebrow: "Fondasi data & otomasi", title: "Alat kerja yang berkembang menjadi produk.", intro: "Sales tools, KPI monitoring, dan reporting automation menjadi fondasi cara saya mengubah kebutuhan harian menjadi workflow yang lebih tertib." },
@@ -67,7 +68,7 @@ export const uiCopy = {
     },
     proofAria: "Selected results",
     capabilities: { eyebrow: "What I do", title: "I turn frontline processes into working systems.", intro: "I study how teams work, define the rules and controls, then use AI and web technology to deliver tools they can use." },
-    work: { eyebrow: "Selected work", title: "Operational systems I shaped and delivered.", intro: "GeoLead, Kayou POS, KLWT Surveyor, and Narotama support lead generation, multi-booth retail, field research, and workforce operations.", read: "Read the case study", open: "Open", image: "Interface of" },
+    work: { eyebrow: "Selected work", title: "Operational systems I shaped and delivered.", intro: "GeoLead, Kayou POS, KLWT Surveyor, and Narotama support lead generation, multi-booth retail, field research, and workforce operations.", read: "Read the case study", open: "Open", image: "Interface of", visitSite: "Visit site" },
     about: { eyebrow: "Profile", title: "I bring operational context into every system.", openLinkedin: "Open LinkedIn", skills: "Capabilities & tools" },
     journey: { eyebrow: "Professional journey", title: "Five years improving work through operations, data, and systems.", intro: "My experience across returns, sales leadership, analytics, logistics, and process control provides the operating context behind each product.", latest: "Recent experience", latestTitle: "Products & operations", foundation: "Career foundation", foundationTitle: "Data & process control" },
     legacy: { eyebrow: "Data & automation foundation", title: "Internal tools that grew into product thinking.", intro: "Sales tools, KPI monitoring, and reporting automation taught me how to turn daily operational needs into controlled workflows." },
@@ -96,7 +97,7 @@ export const uiCopy = {
     },
     proofAria: "代表性成果",
     capabilities: { eyebrow: "我的工作", title: "把一线流程转化为可落地的系统。", intro: "我先梳理团队的实际工作方式，明确规则与控制点，再借助 AI 和 Web 技术交付可用工具。" },
-    work: { eyebrow: "精选项目", title: "我规划并落地的运营系统。", intro: "GeoLead、Kayou POS、KLWT Surveyor 与 Narotama 分别服务于客户开发、多展位零售、市场调研和员工管理。", read: "阅读案例", open: "打开", image: "界面：" },
+    work: { eyebrow: "精选项目", title: "我规划并落地的运营系统。", intro: "GeoLead、Kayou POS、KLWT Surveyor 与 Narotama 分别服务于客户开发、多展位零售、市场调研和员工管理。", read: "阅读案例", open: "打开", image: "界面：", visitSite: "访问网站" },
     about: { eyebrow: "个人简介", title: "我把真实运营场景写进每一套系统。", openLinkedin: "查看 LinkedIn", skills: "能力与工具" },
     journey: { eyebrow: "职业经历", title: "五年间，我用运营、数据与系统持续改进工作流程。", intro: "退货、销售管理、数据分析、物流与流程控制的经历，为我设计产品提供了完整的运营背景。", latest: "近期经历", latestTitle: "产品与运营", foundation: "职业基础", foundationTitle: "数据与流程控制" },
     legacy: { eyebrow: "数据与自动化基础", title: "从内部工具积累产品方法。", intro: "销售工具、KPI 监控和报表自动化，让我学会把日常运营需求转化为有规则、可追踪的工作流。" },

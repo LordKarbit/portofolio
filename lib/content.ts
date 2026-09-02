@@ -32,6 +32,8 @@ export type Project = {
   outcome: string;
   features: string[];
   disclosure?: string;
+  url?: string;
+  updatedAt?: string;
 };
 
 export type Experience = {
@@ -85,6 +87,7 @@ export const projects: Project[] = [
       "Sistem akuisisi prospek Google Maps berbasis batas wilayah terverifikasi, dari pemilihan area hingga ekspor lead yang siap ditindaklanjuti.",
     metric: "83.518 polygon desa raw terindeks",
     image: "/images/projects/geolead.jpg",
+    url: "https://geolead.id",
     tags: ["Next.js", "Python", "Supabase", "Geospatial"],
     featured: true,
     published: true,

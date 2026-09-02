@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
@@ -31,9 +33,11 @@ import {
 import { ProjectCard } from "@/components/project-card";
 import { PdfModalCard } from "@/components/pdf-modal-card";
 import { RoleRotator } from "@/components/role-rotator";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { SiteHeader } from "@/components/site-header";
 import { StructuredData } from "@/components/structured-data";
 import { getPublicExperiences, getPublicProfile, getPublicProjects, getPublicSkills } from "@/lib/data";
+import { LOCALE_COOKIE } from "@/lib/locale-cookie";
 import { siteUrl } from "@/lib/site-url";
 import {
   localeHtmlLang,
@@ -47,6 +51,7 @@ import {
   localizeSkills,
   resolveLocale,
   uiCopy,
+  withLocale,
 } from "@/lib/localization";
 
 const proofIcons: LucideIcon[] = [UsersRound, TrendingDown, BadgeDollarSign, Boxes];
@@ -69,8 +74,20 @@ const skillIcons: Record<string, LucideIcon> = {
 
 type HomePageProps = { searchParams: Promise<{ lang?: string | string[] }> };
 
+export async function generateMetadata({ searchParams }: HomePageProps): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const locale = resolveLocale((await searchParams).lang, cookieStore.get(LOCALE_COOKIE)?.value);
+  return {
+    alternates: {
+      canonical: withLocale("/", locale),
+      languages: { id: "/", en: "/?lang=en", "zh-CN": "/?lang=zh", "x-default": "/" },
+    },
+  };
+}
+
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const locale = resolveLocale((await searchParams).lang);
+  const cookieStore = await cookies();
+  const locale = resolveLocale((await searchParams).lang, cookieStore.get(LOCALE_COOKIE)?.value);
   const copy = uiCopy[locale];
   const [profile, projects, experiences, skills] = await Promise.all([
     getPublicProfile(),
@@ -174,6 +191,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   return (
     <main lang={localeHtmlLang[locale]}>
       <StructuredData data={structuredData} />
+      <ScrollReveal />
       <SiteHeader locale={locale} />
 
       <section className="hero shell" id="home">

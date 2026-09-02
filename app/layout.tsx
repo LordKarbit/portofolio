@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Montserrat, Noto_Sans_SC, Poppins } from "next/font/google";
 import { Suspense } from "react";
 import { Analytics } from "@/components/analytics";
+import { LOCALE_COOKIE } from "@/lib/locale-cookie";
+import { localeHtmlLang, resolveLocale } from "@/lib/localization";
 import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -85,9 +88,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies();
+  const locale = resolveLocale(undefined, cookieStore.get(LOCALE_COOKIE)?.value);
+
   return (
-    <html lang="id">
+    <html lang={localeHtmlLang[locale]}>
       <body className={`${poppins.variable} ${montserrat.variable} ${notoSansSC.variable}`}>
         {children}
         <Suspense fallback={null}>

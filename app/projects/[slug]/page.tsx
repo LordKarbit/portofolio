@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, Layers3 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ExternalLink, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { SiteHeader } from "@/components/site-header";
 import { StructuredData } from "@/components/structured-data";
 import { projects as fallbackProjects } from "@/lib/content";
 import { getPublicProject, getPublicProjects } from "@/lib/data";
+import { LOCALE_COOKIE } from "@/lib/locale-cookie";
 import { localeHtmlLang, localizeProject, localizeProjects, resolveLocale, uiCopy, withLocale } from "@/lib/localization";
 import { siteUrl } from "@/lib/site-url";
+import { TechStackIcons } from "@/lib/tech-icons";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -21,7 +25,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params, searchParams }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const locale = resolveLocale((await searchParams).lang);
+  const cookieStore = await cookies();
+  const locale = resolveLocale((await searchParams).lang, cookieStore.get(LOCALE_COOKIE)?.value);
   const rawProject = await getPublicProject(slug);
   if (!rawProject) return { title: uiCopy[locale].case.missing };
   const project = localizeProject(rawProject, locale);
@@ -30,7 +35,15 @@ export async function generateMetadata({ params, searchParams }: ProjectPageProp
   return {
     title,
     description: project.summary,
-    alternates: { canonical: `/projects/${slug}` },
+    alternates: {
+      canonical: withLocale(`/projects/${slug}`, locale),
+      languages: {
+        id: `/projects/${slug}`,
+        en: `/projects/${slug}?lang=en`,
+        "zh-CN": `/projects/${slug}?lang=zh`,
+        "x-default": `/projects/${slug}`,
+      },
+    },
     openGraph: {
       title,
       description: project.summary,
@@ -49,7 +62,8 @@ export async function generateMetadata({ params, searchParams }: ProjectPageProp
 
 export default async function ProjectPage({ params, searchParams }: ProjectPageProps) {
   const { slug } = await params;
-  const locale = resolveLocale((await searchParams).lang);
+  const cookieStore = await cookies();
+  const locale = resolveLocale((await searchParams).lang, cookieStore.get(LOCALE_COOKIE)?.value);
   const copy = uiCopy[locale];
   const [rawProject, rawProjects] = await Promise.all([getPublicProject(slug), getPublicProjects()]);
   if (!rawProject) notFound();
@@ -91,6 +105,7 @@ export default async function ProjectPage({ params, searchParams }: ProjectPageP
   return (
     <main lang={localeHtmlLang[locale]}>
       <StructuredData data={structuredData} />
+      <ScrollReveal />
       <SiteHeader locale={locale} />
       <article className="case-study shell">
         <Link className="case-back" href={withLocale("/#work", locale)}><ArrowLeft size={17} /> {copy.case.back}</Link>
@@ -98,7 +113,12 @@ export default async function ProjectPage({ params, searchParams }: ProjectPageP
           <div>
             <p className="eyebrow">{project.eyebrow}</p>
             <h1>{project.title}</h1>
-            <p>{project.summary}</p>
+            <p className="case-summary">{project.summary}</p>
+            {project.url && (
+              <a className="button case-visit-site" href={project.url} target="_blank" rel="noreferrer">
+                {copy.work.visitSite} <ExternalLink size={17} aria-hidden="true" />
+              </a>
+            )}
           </div>
           <dl className="case-facts">
             <div><dt>{copy.case.year}</dt><dd>{project.year}</dd></div>
@@ -136,7 +156,7 @@ export default async function ProjectPage({ params, searchParams }: ProjectPageP
               <div key={feature}><Check size={18} aria-hidden="true" /><span>{feature}</span></div>
             ))}
           </div>
-          <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+          <TechStackIcons tags={project.tags} variant="chip" />
         </section>
 
         {project.disclosure && <p className="case-disclosure"><strong>{copy.case.privacy}:</strong> {project.disclosure}</p>}

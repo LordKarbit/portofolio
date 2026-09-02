@@ -1,5 +1,6 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
 import {
   experiences as fallbackExperiences,
   profile as fallbackProfile,
@@ -11,6 +12,8 @@ import {
   type Skill,
 } from "@/lib/content";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
+
+const CACHE_SECONDS = 300;
 
 type Row = Record<string, unknown>;
 
@@ -44,98 +47,120 @@ export function mapProjectRow(row: Row): Project {
     outcome: asString(row.outcome),
     features: asStringArray(row.features),
     disclosure: asString(row.disclosure) || undefined,
+    url: asString(row.url) || undefined,
+    updatedAt: asString(row.updated_at) || undefined,
   };
 }
 
-export async function getPublicProfile(): Promise<Profile> {
-  const supabase = createPublicSupabaseClient();
-  if (!supabase) return fallbackProfile;
+export const getPublicProfile = unstable_cache(
+  async (): Promise<Profile> => {
+    const supabase = createPublicSupabaseClient();
+    if (!supabase) return fallbackProfile;
 
-  const { data, error } = await supabase.from("profiles").select("*").eq("slug", "samsul-arifin").maybeSingle();
-  if (error || !data) return fallbackProfile;
+    const { data, error } = await supabase.from("profiles").select("*").eq("slug", "samsul-arifin").maybeSingle();
+    if (error || !data) return fallbackProfile;
 
-  return {
-    slug: asString(data.slug, fallbackProfile.slug),
-    name: asString(data.name, fallbackProfile.name),
-    role: asString(data.role, fallbackProfile.role),
-    intro: asString(data.intro, fallbackProfile.intro),
-    about: asString(data.about, fallbackProfile.about),
-    location: asString(data.location, fallbackProfile.location),
-    email: asString(data.email, fallbackProfile.email),
-    phone: asString(data.phone, fallbackProfile.phone),
-    linkedin: asString(data.linkedin, fallbackProfile.linkedin),
-    availability: asString(data.availability, fallbackProfile.availability),
-  };
-}
+    return {
+      slug: asString(data.slug, fallbackProfile.slug),
+      name: asString(data.name, fallbackProfile.name),
+      role: asString(data.role, fallbackProfile.role),
+      intro: asString(data.intro, fallbackProfile.intro),
+      about: asString(data.about, fallbackProfile.about),
+      location: asString(data.location, fallbackProfile.location),
+      email: asString(data.email, fallbackProfile.email),
+      phone: asString(data.phone, fallbackProfile.phone),
+      linkedin: asString(data.linkedin, fallbackProfile.linkedin),
+      availability: asString(data.availability, fallbackProfile.availability),
+    };
+  },
+  ["public-profile"],
+  { tags: ["profile"], revalidate: CACHE_SECONDS },
+);
 
-export async function getPublicProjects(): Promise<Project[]> {
-  const supabase = createPublicSupabaseClient();
-  if (!supabase) return fallbackProjects;
+export const getPublicProjects = unstable_cache(
+  async (): Promise<Project[]> => {
+    const supabase = createPublicSupabaseClient();
+    if (!supabase) return fallbackProjects;
 
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("published", true)
-    .order("sort_order", { ascending: true });
-
-  return error || !data?.length ? fallbackProjects : data.map(mapProjectRow);
-}
-
-export async function getPublicProject(slug: string): Promise<Project | null> {
-  const supabase = createPublicSupabaseClient();
-  if (supabase) {
     const { data, error } = await supabase
       .from("projects")
       .select("*")
-      .eq("slug", slug)
       .eq("published", true)
-      .maybeSingle();
-    if (!error && data) return mapProjectRow(data);
-  }
+      .order("sort_order", { ascending: true });
 
-  return fallbackProjects.find((project) => project.slug === slug) ?? null;
-}
+    return error || !data?.length ? fallbackProjects : data.map(mapProjectRow);
+  },
+  ["public-projects"],
+  { tags: ["projects"], revalidate: CACHE_SECONDS },
+);
 
-export async function getPublicExperiences(): Promise<Experience[]> {
-  const supabase = createPublicSupabaseClient();
-  if (!supabase) return fallbackExperiences;
+export const getPublicProject = unstable_cache(
+  async (slug: string): Promise<Project | null> => {
+    const supabase = createPublicSupabaseClient();
+    if (supabase) {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+      if (!error && data) return mapProjectRow(data);
+    }
 
-  const { data, error } = await supabase
-    .from("experiences")
-    .select("*")
-    .eq("published", true)
-    .order("sort_order", { ascending: true });
-  if (error || !data?.length) return fallbackExperiences;
+    return fallbackProjects.find((project) => project.slug === slug) ?? null;
+  },
+  ["public-project"],
+  { tags: ["projects"], revalidate: CACHE_SECONDS },
+);
 
-  return data.map((row) => ({
-    id: asString(row.id) || undefined,
-    period: asString(row.period),
-    title: asString(row.title),
-    company: asString(row.company),
-    summary: asString(row.summary),
-    achievements: asStringArray(row.achievements),
-    logo: asString(row.logo_url) || undefined,
-    sortOrder: Number(row.sort_order ?? 0),
-    published: Boolean(row.published),
-  }));
-}
+export const getPublicExperiences = unstable_cache(
+  async (): Promise<Experience[]> => {
+    const supabase = createPublicSupabaseClient();
+    if (!supabase) return fallbackExperiences;
 
-export async function getPublicSkills(): Promise<Skill[]> {
-  const supabase = createPublicSupabaseClient();
-  if (!supabase) return fallbackSkills;
+    const { data, error } = await supabase
+      .from("experiences")
+      .select("*")
+      .eq("published", true)
+      .order("sort_order", { ascending: true });
+    if (error || !data?.length) return fallbackExperiences;
 
-  const { data, error } = await supabase
-    .from("skills")
-    .select("*")
-    .eq("published", true)
-    .order("sort_order", { ascending: true });
-  if (error || !data?.length) return fallbackSkills;
+    return data.map((row) => ({
+      id: asString(row.id) || undefined,
+      period: asString(row.period),
+      title: asString(row.title),
+      company: asString(row.company),
+      summary: asString(row.summary),
+      achievements: asStringArray(row.achievements),
+      logo: asString(row.logo_url) || undefined,
+      sortOrder: Number(row.sort_order ?? 0),
+      published: Boolean(row.published),
+    }));
+  },
+  ["public-experiences"],
+  { tags: ["experiences"], revalidate: CACHE_SECONDS },
+);
 
-  return data.map((row) => ({
-    id: asString(row.id) || undefined,
-    name: asString(row.name),
-    category: asString(row.category),
-    sortOrder: Number(row.sort_order ?? 0),
-    published: Boolean(row.published),
-  }));
-}
+export const getPublicSkills = unstable_cache(
+  async (): Promise<Skill[]> => {
+    const supabase = createPublicSupabaseClient();
+    if (!supabase) return fallbackSkills;
+
+    const { data, error } = await supabase
+      .from("skills")
+      .select("*")
+      .eq("published", true)
+      .order("sort_order", { ascending: true });
+    if (error || !data?.length) return fallbackSkills;
+
+    return data.map((row) => ({
+      id: asString(row.id) || undefined,
+      name: asString(row.name),
+      category: asString(row.category),
+      sortOrder: Number(row.sort_order ?? 0),
+      published: Boolean(row.published),
+    }));
+  },
+  ["public-skills"],
+  { tags: ["skills"], revalidate: CACHE_SECONDS },
+);

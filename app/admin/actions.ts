@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { ADMIN_EMAIL, requireAdmin } from "@/lib/auth";
 import { siteUrl } from "@/lib/site-url";
@@ -119,6 +119,7 @@ export async function saveProfileAction(formData: FormData) {
   };
   const { error } = await supabase.from("profiles").upsert(payload, { onConflict: "slug" });
   if (error) failure("/admin", `Profil belum tersimpan: ${error.message}`);
+  revalidateTag("profile", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=profile");
 }
@@ -130,6 +131,7 @@ export async function createProjectAction(formData: FormData) {
   const payload = projectPayload(formData, uploadedUrl || value(formData, "image_url", 1000));
   const { data, error } = await supabase.from("projects").insert(payload).select("id").single();
   if (error) failure("/admin", `Proyek belum dibuat: ${error.message}`);
+  revalidateTag("projects", { expire: 0 });
   revalidatePath("/");
   revalidatePath(`/projects/${payload.slug}`);
   revalidatePath("/sitemap.xml");
@@ -146,6 +148,7 @@ export async function updateProjectAction(formData: FormData) {
   const payload = projectPayload(formData, uploadedUrl || value(formData, "image_url", 1000));
   const { error } = await supabase.from("projects").update(payload).eq("id", id);
   if (error) failure(`/admin/projects/${id}`, `Perubahan belum tersimpan: ${error.message}`);
+  revalidateTag("projects", { expire: 0 });
   revalidatePath("/");
   revalidatePath(`/projects/${payload.slug}`);
   revalidatePath("/sitemap.xml");
@@ -158,6 +161,7 @@ export async function deleteProjectAction(formData: FormData) {
   if (!id) failure("/admin", "ID proyek tidak ditemukan.");
   const { error } = await supabase.from("projects").delete().eq("id", id);
   if (error) failure("/admin", `Proyek belum dihapus: ${error.message}`);
+  revalidateTag("projects", { expire: 0 });
   revalidatePath("/");
   revalidatePath("/sitemap.xml");
   redirect("/admin?saved=deleted");
@@ -178,6 +182,7 @@ export async function createExperienceAction(formData: FormData) {
   if (!payload.title || !payload.company) failure("/admin", "Jabatan dan perusahaan wajib diisi.");
   const { error } = await supabase.from("experiences").insert(payload);
   if (error) failure("/admin", `Pengalaman belum ditambahkan: ${error.message}`);
+  revalidateTag("experiences", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=experience");
 }
@@ -198,6 +203,7 @@ export async function updateExperienceAction(formData: FormData) {
   if (!id || !payload.title || !payload.company) failure("/admin", "Data pengalaman belum lengkap.");
   const { error } = await supabase.from("experiences").update(payload).eq("id", id);
   if (error) failure("/admin", `Pengalaman belum tersimpan: ${error.message}`);
+  revalidateTag("experiences", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=experience-updated#experience");
 }
@@ -206,6 +212,7 @@ export async function deleteExperienceAction(formData: FormData) {
   const { supabase } = await requireAdmin();
   const id = value(formData, "id", 80);
   if (id) await supabase.from("experiences").delete().eq("id", id);
+  revalidateTag("experiences", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=experience-deleted");
 }
@@ -221,6 +228,7 @@ export async function createSkillAction(formData: FormData) {
   if (!payload.name || !payload.category) failure("/admin", "Nama dan kategori keahlian wajib diisi.");
   const { error } = await supabase.from("skills").insert(payload);
   if (error) failure("/admin", `Keahlian belum ditambahkan: ${error.message}`);
+  revalidateTag("skills", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=skill");
 }
@@ -237,6 +245,7 @@ export async function updateSkillAction(formData: FormData) {
   if (!id || !payload.name || !payload.category) failure("/admin", "Data keahlian belum lengkap.");
   const { error } = await supabase.from("skills").update(payload).eq("id", id);
   if (error) failure("/admin", `Keahlian belum tersimpan: ${error.message}`);
+  revalidateTag("skills", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=skill-updated#skills");
 }
@@ -245,6 +254,7 @@ export async function deleteSkillAction(formData: FormData) {
   const { supabase } = await requireAdmin();
   const id = value(formData, "id", 80);
   if (id) await supabase.from("skills").delete().eq("id", id);
+  revalidateTag("skills", { expire: 0 });
   revalidatePath("/");
   redirect("/admin?saved=skill-deleted");
 }

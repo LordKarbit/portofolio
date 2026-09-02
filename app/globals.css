@@ -272,11 +272,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .project-copy .eyebrow { margin-bottom: 12px; }
 .project-title-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .project-title-row h3 { margin: 0; color: var(--navy); font-size: 30px; letter-spacing: -.035em; }
-.icon-link { flex: 0 0 auto; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: var(--accent); box-shadow: var(--shadow-small); }
+.project-title-actions { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
+.icon-link { flex: 0 0 auto; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: var(--accent); box-shadow: var(--shadow-small); transition: transform .2s ease; }
+.icon-link:hover { transform: translateY(-2px) scale(1.05); }
 .project-copy > p:not(.eyebrow) { min-height: 78px; margin: 18px 0 24px; color: var(--muted); line-height: 1.62; }
-.project-meta { display: flex; justify-content: space-between; gap: 20px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; }
+.project-meta { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; }
 .project-meta strong { color: var(--navy); }
-.project-meta span { color: var(--muted); text-align: right; }
+.tech-stack-icons { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; }
+.tech-stack-icons span { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 999px; color: #596274; background: rgba(255,255,255,.7); border: 1px solid var(--line); font-size: 11px; font-weight: 700; white-space: nowrap; transition: transform .2s ease, color .2s ease; }
+.tech-stack-icons span:hover { transform: translateY(-2px); color: var(--accent); }
 .contact-strip { margin-bottom: 80px; padding: 72px; border-radius: 30px; text-align: center; background: var(--navy); box-shadow: 0 24px 70px rgba(23,35,56,.22); }
 .contact-strip h2 { max-width: 820px; margin-inline: auto; color: #fff; }
 .contact-strip .button { margin-top: 34px; }
@@ -296,7 +300,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .skill-group + .skill-group { margin-top: 26px; padding-top: 24px; border-top: 1px solid var(--line); }
 .skill-group h3 { margin: 0 0 13px; color: var(--navy); font-size: 15px; }
 .skill-list { display: flex; flex-wrap: wrap; gap: 8px; }
-.skill-list span, .tag-row span { padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; color: #596274; background: rgba(255,255,255,.58); font-size: 12px; font-weight: 700; }
+.skill-list span, .tag-row span { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; color: #596274; background: rgba(255,255,255,.58); font-size: 12px; font-weight: 700; }
 .journey-section { padding-block: 112px; border-top: 1px solid var(--line); }
 .journey-heading { margin-bottom: 60px; }
 .timeline { border-top: 1px solid var(--line); }
@@ -334,7 +338,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .case-back:hover { color: var(--accent); }
 .case-header { margin-top: 52px; display: grid; grid-template-columns: 1fr 360px; gap: 90px; align-items: end; }
 .case-header h1 { margin: 0; color: var(--navy); font-size: clamp(60px, 9vw, 110px); line-height: .92; letter-spacing: -.07em; }
-.case-header > div > p:last-child { max-width: 690px; margin: 28px 0 0; color: var(--muted); font-size: 20px; line-height: 1.68; }
+.case-header .case-summary { max-width: 690px; margin: 28px 0 0; color: var(--muted); font-size: 20px; line-height: 1.68; }
+.case-visit-site { margin-top: 26px; }
 .case-facts { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
 .case-facts div { padding: 17px 0; display: grid; grid-template-columns: 95px 1fr; gap: 18px; border-bottom: 1px solid var(--line); }
 .case-facts dt { color: var(--muted); font-size: 11px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
@@ -913,6 +918,10 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
 .skill-list { gap: 10px; }
 .skill-list span,
 .tag-row span { padding: 9px 13px; border: 0; border-radius: 6px; background: var(--gradient-card); box-shadow: 3px 3px 9px rgba(209, 217, 230, 0.84), -3px -3px 9px #fff; font-size: 11px; }
+/* .case-system has a dark navy background — the light neumorphic chip above
+   (meant for light sections like .skills-panel) left near-white text on a
+   near-white chip there, unreadable. Restore a dark-context-appropriate chip. */
+.case-system .tag-row span { color: #d9dfeb; background: rgba(255,255,255,.08); box-shadow: none; border: 1px solid rgba(255,255,255,.16); }
 
 .journey-heading { margin-bottom: 60px; }
 .timeline-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 70px; }
@@ -1141,37 +1150,55 @@ a.quick-icon:hover { color: #fff; background: var(--gradient-hover); transform: 
 .hero-copy > :nth-child(4) { animation-delay: 210ms; }
 .hero-copy > :nth-child(5) { animation-delay: 280ms; }
 
-@supports (animation-timeline: view()) {
-  main > section:not(.hero),
-  .reveal,
-  .section-heading > *,
-  .proof-item,
-  .capability-card,
-  .project-card,
-  .about-copy,
-  .skills-panel,
-  .skill-group,
-  .timeline-eyebrow,
-  .timeline-column-title,
-  .timeline-card,
-  .legacy-card,
-  .contact-strip > *,
-  .site-footer > *,
-  .case-back,
-  .case-header > *,
-  .case-cover,
-  .case-narrative section,
-  .case-system > *,
-  .case-disclosure,
-  .next-case {
-    animation: reveal-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 20%;
-  }
-  @keyframes reveal-up {
-    from { opacity: 0.08; translate: 0 30px; }
-    to { opacity: 1; translate: 0 0; }
-  }
+/*
+ * Scroll-reveal: JS (components/scroll-reveal.tsx) arms `.reveal` elements
+ * with `.reveal-armed` on mount, then adds `.is-visible` via
+ * IntersectionObserver as each one enters the viewport. Elements stay fully
+ * visible (no `.reveal-armed`) if JS never runs, so content is never hidden
+ * from crawlers or no-JS visitors.
+ */
+main > section:not(.hero),
+.reveal,
+.section-heading > *,
+.proof-item,
+.capability-card,
+.project-card,
+.about-copy,
+.skills-panel,
+.skill-group,
+.timeline-eyebrow,
+.timeline-column-title,
+.timeline-card,
+.legacy-card,
+.contact-strip > *,
+.site-footer > *,
+.case-back,
+.case-header > *,
+.case-cover,
+.case-narrative section,
+.case-system > *,
+.case-disclosure,
+.next-case {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.reveal-armed {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: opacity 0.7s cubic-bezier(0.16, 0.8, 0.24, 1), transform 0.7s cubic-bezier(0.16, 0.8, 0.24, 1), filter 0.7s ease-out;
+}
+.proof-item.reveal-armed,
+.capability-card.reveal-armed,
+.project-card.reveal-armed,
+.timeline-card.reveal-armed,
+.legacy-card.reveal-armed {
+  filter: blur(6px);
+}
+.reveal-armed.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 @media (max-width: 1120px) {

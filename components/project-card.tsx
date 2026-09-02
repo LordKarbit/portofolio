@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ClipboardCheck, MapPinned, Store, UserRoundCheck } from "lucide-react";
+import { ArrowUpRight, ClipboardCheck, ExternalLink, MapPinned, Store, UserRoundCheck } from "lucide-react";
 import type { Project } from "@/lib/content";
 import { type Locale, uiCopy, withLocale } from "@/lib/localization";
+import { TechStackIcons } from "@/lib/tech-icons";
 
 const projectIcons = {
   geolead: MapPinned,
@@ -35,14 +36,28 @@ export function ProjectCard({ project, index, locale }: { project: Project; inde
         </div>
         <div className="project-title-row">
           <h3>{project.title}</h3>
-          <Link className="icon-link" href={projectHref} aria-label={`${copy.open} ${project.title}`}>
-            <ArrowUpRight size={20} aria-hidden="true" />
-          </Link>
+          <div className="project-title-actions">
+            {project.url && (
+              <a
+                className="icon-link"
+                href={project.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${copy.visitSite} ${project.title}`}
+                title={copy.visitSite}
+              >
+                <ExternalLink size={18} aria-hidden="true" />
+              </a>
+            )}
+            <Link className="icon-link" href={projectHref} aria-label={`${copy.open} ${project.title}`}>
+              <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
         <p>{project.summary}</p>
         <div className="project-meta">
           <strong>{project.metric}</strong>
-          <span>{project.tags.slice(0, 2).join(" · ")}</span>
+          <TechStackIcons tags={project.tags} limit={3} variant="compact" />
         </div>
       </div>
     </article>
