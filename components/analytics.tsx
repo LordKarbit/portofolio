@@ -28,6 +28,9 @@ type TrackedLink = {
 function classifyLink(anchor: HTMLAnchorElement): TrackedLink | null {
   const href = anchor.getAttribute("href") ?? "";
 
+  if (anchor.dataset.shareMethod) {
+    return { name: "share", parameters: { method: anchor.dataset.shareMethod, action: "opened_composer", content_type: "portfolio", item_id: "samsul-arifin" } };
+  }
   if (href.startsWith("mailto:")) return { name: "generate_lead", parameters: { method: "email" } };
   if (href.startsWith("tel:")) return { name: "generate_lead", parameters: { method: "phone" } };
   if (href.includes("wa.me/")) return { name: "generate_lead", parameters: { method: "whatsapp" } };

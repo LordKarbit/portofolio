@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { FileDown } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { ShareButton } from "@/components/share-button";
 import { type Locale, uiCopy, withLocale } from "@/lib/localization";
+import { siteUrl } from "@/lib/site-url";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const copy = uiCopy[locale];
@@ -21,9 +23,12 @@ export function SiteHeader({ locale }: { locale: Locale }) {
       </nav>
       <div className="header-actions">
         <LanguageSwitcher locale={locale} label={copy.nav.languageAria} />
-        <a className="button button-compact" href="/Samsul-Arifin-CV.pdf" download>
-          {copy.nav.downloadCv} <FileDown size={15} aria-hidden="true" />
-        </a>
+        <div className="header-action-buttons">
+          <ShareButton locale={locale} url={`${siteUrl}/`} />
+          <a className="button button-compact header-cv" href="/Samsul-Arifin-CV.pdf" download aria-label={copy.nav.downloadCv} title={copy.nav.downloadCv}>
+            <span className="header-action-label">{copy.nav.downloadCv}</span><FileDown size={18} aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </header>
   );
